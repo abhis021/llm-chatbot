@@ -38,7 +38,7 @@ def query_ollama(input_text):
     headers = {
         "Content-Type": "application/json",
         # You may or may not need the Authorization header depending on your setup
-        "Authorization": "AAAAC3NzaC1lZDI1NTE5AAAAIPx0jESDcnDySiz7wPYgUhaRO5qmAEZTyed+aOw0803c"  # If needed
+        "Authorization": ""  # If needed
     }
     data = {
         "model": "llama3.2",
@@ -55,16 +55,19 @@ def query_ollama(input_text):
         return "Error: Unable to communicate with the model."
     
     # Function to generate TTS from text and save as audio file
-def generate_audio(response_text):
-    try:
-        # Convert the text to speech
+def generate_audio(response_text, audio_file ="static/response_audio.mp3"):
+        #Delete the old file if it exists
+        if os.path.exists(audio_file):
+            os.remove(audio_file)
+            print(f"Deleted old audio file: {audio_file}")
+        
+        
+        
+        # Generate new audio file
         tts = gTTS(text=response_text, lang='en')
-        audio_filename = "static/response_audio.mp3"
-        tts.save(audio_filename)
-        return audio_filename
-    except Exception as e:
-        print(f"Error generating audio: {e}")
-        return None
+        
+        tts.save(audio_file)
+        return audio_file
 
 # Route to serve the generated audio
 @app.route("/audio")
