@@ -13,6 +13,7 @@
                 <div class="chat-message bot-message">
                     <p>Welcome to the chatbot! How can I assist you today?</p>
                 </div>
+                
                 {% if user_input %}
                 <div class="chat-message user-message">
                     <p><strong>You:</strong> {{ user_input }}</p>
@@ -23,9 +24,22 @@
                         {{ response_text|safe }}
                     </div>
                 </div>
+
+                <!-- Audio Playback Section -->
+                {% if audio_file %}
+                <div class="chat-message bot-message">
+                    <p><strong>Bot (Audio):</strong></p>
+                    <audio controls>
+                        <source src="{{ url_for('static', filename='audio/response_audio.mp3') }}" type="audio/mpeg">
+
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                {% endif %}
                 {% endif %}
             </div>
         </div>
+
         <div class="chat-input">
             <form method="POST" action="/">
                 <input type="text" name="user_input" id="user_input" placeholder="Type a message..." required>

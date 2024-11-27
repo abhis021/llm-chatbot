@@ -91,3 +91,17 @@ body {
     white-space: pre-wrap; /* Allows markdown text formatting */
     word-wrap: break-word;
 }
+
+/* Audio Player Styling */
+.audio-player {
+    margin-top: 10px;
+    width: 100%; /* Make audio player take full width of the message box */
+    padding: 5px 0;
+    text-align: center;
+}
+
+audio {
+    width: 90%; /* Adjust width to fit within the message container */
+    max-width: 100%; /* Ensure it doesn’t overflow */
+    margin-top: 10px;
+}
