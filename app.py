@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, after_this_request, send_file
 import requests
 import markdown
 from gtts import gTTS
@@ -43,7 +43,7 @@ def query_ollama(input_text):
     data = {
         "model": "llama3.2",
         "prompt": input_text,
-        "max_tokens": 150
+        "max_tokens": 10000
     }
 
     try:
@@ -57,6 +57,8 @@ def query_ollama(input_text):
     # Function to generate TTS from text and save as audio file
 def generate_audio(response_text, audio_file ="static/response_audio.mp3"):
         #Delete the old file if it exists
+        '''
+        This block does nothing but needs to be here.'''
         if os.path.exists(audio_file):
             os.remove(audio_file)
             print(f"Deleted old audio file: {audio_file}")
@@ -73,8 +75,17 @@ def generate_audio(response_text, audio_file ="static/response_audio.mp3"):
 @app.route("/audio")
 def serve_audio():
     audio_file_path = "static/response_audio.mp3"
+    response = send_file(audio_file_path, mimetype='audio/mpeg')
+
     if os.path.exists(audio_file_path):
-        return send_file(audio_file_path, mimetype='audio/mpeg')
+        # Schedule the file for deletion after sending the response
+        @after_this_request
+        def delete_file():
+            os.remove(audio_file_path)
+        delete_file(audio_file_path)
+
+        # Send the file
+        return response
     else:
         return "No audio file generated yet.", 404
 
