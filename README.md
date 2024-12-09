@@ -24,5 +24,14 @@ The latency of this system depends on the system running the implementation.
 * flask
 * gTTS
 
+Has some latency while fetching response, hopefully it will reduce on more powerful hardware.
+
 ## Windows
-It don't freaking work.
+
+* Python 3.11
+* Ollama
+* llama3.2
+* flask
+* gTTS
+
+Has some latency while fetching response, the hardware is powerful and uses GPU acceleration wherever possible.
